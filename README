@@ -1,0 +1,9 @@
+SSLStrip for Android
+
+This project is port of SSLStrip(https://github.com/moxie0/sslstrip), plus NanoHTTPD and Arpspoof for Andorid libraries.
+
+How to build:
+1). Go to libs folder, run ndk-build, copy arpspoof to res/raw/arpspoof
+2). Compile this eclipse project as usual!
+
+PS: For research purposes only. Please do not abuse this software.
