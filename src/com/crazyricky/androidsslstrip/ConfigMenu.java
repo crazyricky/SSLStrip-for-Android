@@ -16,6 +16,7 @@ import android.text.format.Formatter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class ConfigMenu extends Activity {
@@ -28,8 +29,10 @@ public class ConfigMenu extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
         
-        final Button understandBtn = (Button) this.findViewById(R.id.understand_btn);
+        final Button understandBtn = (Button) findViewById(R.id.understand_btn);
         final EditText wifiEditText = (EditText) findViewById(R.id.wifi_edittext);
+        final CheckBox saveLogCheckBox = (CheckBox) findViewById(R.id.write_file);
+        
         understandBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 String str = wifiEditText.getText().toString();
@@ -37,15 +40,12 @@ public class ConfigMenu extends Activity {
                 SharedPreferences sp = ConfigMenu.this.getSharedPreferences(CONFIG_FILE, Context.MODE_PRIVATE);
                 sp.edit().putString("wifi", str).commit();
                 sp.edit().putBoolean("understand", true).commit();
+                sp.edit().putBoolean("save_logs", saveLogCheckBox.isChecked()).commit();
                 ConfigMenu.this.setResult(Activity.RESULT_OK);
                 finish();
             }
         });
-        
-        SharedPreferences sp = ConfigMenu.this.getSharedPreferences(CONFIG_FILE, Context.MODE_PRIVATE);
-        String wifi = sp.getString("wifi", "");
-        wifiEditText.setText(wifi);
-        
+                
         Button detectBtn = (Button) this.findViewById(R.id.auto_btn);
         detectBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -68,6 +68,14 @@ public class ConfigMenu extends Activity {
                 alert.show();
             }
         });
+        
+        // use saved configs
+        SharedPreferences sp = ConfigMenu.this.getSharedPreferences(CONFIG_FILE, Context.MODE_PRIVATE);
+        String wifi = sp.getString("wifi", "");
+        wifiEditText.setText(wifi);
+        
+        boolean saveLogs = sp.getBoolean("save_logs", false);
+        saveLogCheckBox.setChecked(saveLogs);
     }
     
     private void autoSetWifi() {

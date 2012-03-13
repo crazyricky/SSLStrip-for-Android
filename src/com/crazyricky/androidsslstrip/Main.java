@@ -215,6 +215,7 @@ public class Main extends Activity {
     }
     
     private void startSSLStrip() {
+        Logging.startLogging(this);
         try {
             Process process = Runtime.getRuntime().exec("su");
             DataOutputStream os = new DataOutputStream(process.getOutputStream());
@@ -257,6 +258,8 @@ public class Main extends Activity {
         // update UI
         sArpspoofRunning = false;
         sSSLStripRunning = false;
+        
+        Logging.stopLogging();
         updateUI();
     }
     
